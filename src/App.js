@@ -1,59 +1,86 @@
-import React, {useState} from 'react'
-import styled from 'styled-components'
-import Resume from './components/Resume'
-import ResumeBuilder from './components/ResumeViewer'
+import { useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
+import { Theme, themes } from "lx-theme";
 
-const App = () => {
+import Home from "./pages/home";
+import Login from "./pages/login";
+import EditProfile from "./pages/profile";
+import EditResume from "./pages/resume";
+import EmployeeList from "./pages/employees";
+import EmployerList from "./pages/employers";
+import VerifyList from "./pages/verify";
+import VerifyEdit from "./pages/verify/edit";
+import JobList from "./pages/jobs";
+import JobEdit from "./pages/jobs/edit";
+import OfferList from "./pages/offers";
+import OfferEdit from "./pages/offers/edit";
 
-  const [showComponent, setShowComponent] = useState(false)
+import Navbar from "./utils/Nav";
+import { AppBar, Stack } from "@mui/material";
 
-  const toggleComponent = () => {
-    console.log('toggle')
-    setShowComponent(!showComponent)
-  }
+const routes = {
+  super: {
+    Home: "/",
+    Profile: "/profile",
+    Employers: "/employers",
+    Employees: "/employees",
+    Verify: "/verify",
+    Jobs: "/jobs",
+    Offers: "/offers",
+  },
+  employer: {
+    Home: "/",
+    Profile: "/profile",
+    Jobs: "/jobs",
+    Employees: "/employees",
+    Offers: "/offers",
+  },
+  employee: {
+    Home: "/",
+    Profile: "/profile",
+    Resume: "/resume",
+    Jobs: "/jobs",
+    Offers: "/offers",
+  },
+  anon: {
+    Home: "/",
+  },
+};
 
-  const Toolbar = () => {
-    return (
-      <ToolbarWrapper>
-        <button onClick={toggleComponent}>Toggle</button>
-      </ToolbarWrapper>
-    )
-  }
-  
+function App() {
+  const user = useSelector((state) => state.login.user);
+
   return (
-    
-    <Container>
-      <Toolbar />
-      <Spacer />
-      {
-        showComponent?
-        <Container>
-          <Resume />
-        </Container>
-        :<Container>
-          <ResumeBuilder />
-        </Container>
-        // Component
-      }
-    </Container>
+    <Theme theme={themes["GENERAL"]}>
+      <AppBar position="static">
+        <Stack
+          direction="row"
+          gap={2}
+          sx={{
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Navbar routes={routes[user?.role ?? "anon"] ?? {}} />
+          <Login />
+        </Stack>
+      </AppBar>
+      <Routes>
+        <Route exact path="/" element={<Home />}></Route>
+        <Route exact path="/profile" element={<EditProfile />}></Route>
+        <Route exact path="/resume" element={<EditResume />}></Route>
+        <Route exact path="/employers" element={<EmployerList />}></Route>
+        <Route exact path="/employees" element={<EmployeeList />}></Route>
+        <Route exact path="/verify" element={<VerifyList />}></Route>
+        <Route exact path="/verify/:id/edit" element={<VerifyEdit />}></Route>
+        <Route exact path="/jobs" element={<JobList />}></Route>
+        <Route exact path="/jobs/:id/edit" element={<JobEdit />}></Route>
+        <Route exact path="/offers" element={<OfferList />}></Route>
+        <Route exact path="/offers/:id/edit" element={<OfferEdit />}></Route>
+      </Routes>
+    </Theme>
   );
 }
-
-const Container = styled.div`
-  width: 100%;
-  position: relative;
-`
-const ToolbarWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* width: 100%; */
-  background-color: rgba(0,0,0,0.1);
-  padding: 10px;
-`
-const Spacer = styled.div`
-  height: 40px;
-  width: 100%;
-`
 
 export default App;
