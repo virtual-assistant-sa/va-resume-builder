@@ -2,12 +2,13 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
-import { pick } from "./array";
+import { pick } from "../array";
 
-function generateRandomSentence(...wordArrays) {
+function randSentence(...wordArrays) {
   return wordArrays.map(pick).join(" ");
 }
-export function generateRandomJobTitle() {
+
+export function randJobTitle() {
   const jobPrefixes = ["Senior", "Lead", "Chief", "Manager", "Associate"];
   const jobAreas = ["Software", "Data", "Marketing", "Product", "Design"];
   const jobRoles = [
@@ -17,9 +18,10 @@ export function generateRandomJobTitle() {
     "Manager",
     "Specialist",
   ];
-  return generateRandomSentence(jobPrefixes, jobAreas, jobRoles);
+  return randSentence(jobPrefixes, jobAreas, jobRoles);
 }
-export function generateRandomJobDescription() {
+
+export function randJobDescription() {
   const jobAreas = ["Software", "Data", "Marketing", "Product", "Design"];
   const jobRoles = [
     "Engineer",
@@ -67,7 +69,8 @@ export function generateRandomJobDescription() {
     "."
   );
 }
-export function generateRandomJobSkill() {
+
+export function randJobSkill() {
   var skills = {
     "Programming Languages": [
       "JavaScript",

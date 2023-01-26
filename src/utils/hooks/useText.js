@@ -3,15 +3,19 @@
 // https://www.boost.org/LICENSE_1_0.txt
 
 import React, { useEffect, useState } from "react";
-import TextField from "@mui/material/TextField";
+import MuiTextField from "@mui/material/TextField";
 
 export default function useText(init = "", opts = { fullWidth: true }) {
   const [v, setv] = useState(init);
   useEffect(() => {
-    setv(init);
+    if (v !== init) setv(init);
   }, [init]);
   const C = (
-    <TextField value={v} onChange={(e) => setv(e.target.value)} {...opts} />
+    <MuiTextField
+      value={init}
+      onChange={(e) => setv(e.target.value)}
+      {...opts}
+    />
   );
   return [v, C];
 }

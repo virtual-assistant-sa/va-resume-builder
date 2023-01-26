@@ -1,13 +1,13 @@
 import React, { useMemo, useEffect } from "react";
 import { Button, Stack, Box } from "@mui/material";
 import { useParams } from "react-router-dom";
-import useText, { useMultilineText } from "../../utils/useText";
+import useText, { useMultilineText } from "../../utils/hooks/useText";
 import { useDispatch, useSelector } from "react-redux";
 import { getActions, getFilter } from "./filters";
 import { setJob } from "../../features/jobs/action";
-import { useDate } from "../../utils/useDateTime";
+import { useDate } from "../../utils/hooks/useDateTime";
 import { Skills, EditSkills } from "../Skills";
-import { useStateMemo } from "../../utils/useStateMemo";
+import { useStateMemo } from "../../utils/hooks/useStateMemo";
 
 export default function Job() {
   let { id } = useParams();

@@ -15,7 +15,7 @@ import JobEdit from "./pages/jobs/edit";
 import OfferList from "./pages/offers";
 import OfferEdit from "./pages/offers/edit";
 
-import Navbar from "./utils/Nav";
+import Navbar from "./utils/components/Nav";
 import { AppBar, Stack } from "@mui/material";
 
 const routes = {

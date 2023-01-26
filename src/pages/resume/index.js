@@ -1,59 +1,46 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 import Resume from "./Resume";
-import ResumeBuilder from "./ResumeViewer";
+import Builder from "./Builder";
+import { Box, Fab } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../features/users/action";
+import { DebounceField } from "../../utils/forms/DebounceField";
 
-const App = () => {
-  const [showComponent, setShowComponent] = useState(false);
-
-  const toggleComponent = () => {
-    console.log("toggle");
-    setShowComponent(!showComponent);
-  };
-
-  const Toolbar = () => {
-    return (
-      <ToolbarWrapper>
-        <button onClick={toggleComponent}>Toggle</button>
-      </ToolbarWrapper>
-    );
-  };
-
-  return (
-    <Container>
-      <Toolbar />
-      <Spacer />
-      {
-        showComponent ? (
-          <Container>
-            <Resume />
-          </Container>
-        ) : (
-          <Container>
-            <ResumeBuilder />
-          </Container>
-        )
-        // Component
-      }
-    </Container>
-  );
+const style = {
+  bottom: "auto",
+  right: 20,
+  top: 20,
+  left: "auto",
+  position: "absolute",
 };
 
-const Container = styled.div`
-  width: 100%;
-  position: relative;
-`;
-const ToolbarWrapper = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  /* width: 100%; */
-  background-color: rgba(0, 0, 0, 0.1);
-  padding: 10px;
-`;
-const Spacer = styled.div`
-  height: 40px;
-  width: 100%;
-`;
+export default function Switcher() {
+  const [preview, setPreview] = useState(false);
+  const user = useSelector((state) => state.login.user);
+  const id = user?.id;
 
-export default App;
+  const employee = useSelector((state) => state.users).find((u) => u.id === id);
+
+  const dispatch = useDispatch();
+  const set = (profile) => dispatch(setUser({ id: employee.id, profile }));
+
+  if (employee?.profile)
+    return (
+      <Box padding={3} style={{ position: "relative" }}>
+        <Fab
+          variant="extended"
+          style={style}
+          onClick={() => setPreview((preview) => !preview)}
+        >
+          {preview ? "Edit" : "Preview"}
+        </Fab>
+        {preview ? (
+          <Resume value={{ ...employee.profile, name: employee.name }} />
+        ) : (
+          <DebounceField value={employee.profile} onChange={set}>
+            {(props) => <Builder {...props} />}
+          </DebounceField>
+        )}
+      </Box>
+    );
+}

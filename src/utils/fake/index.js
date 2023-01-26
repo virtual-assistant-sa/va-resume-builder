@@ -1,21 +1,22 @@
 import { faker } from "@faker-js/faker";
 import { nanoid } from "nanoid";
-import {
-  generateRandomJobSkill,
-  generateRandomJobTitle,
-  generateRandomJobDescription,
-} from "./utils/randomJob";
-import { pick, random, fill } from "./utils/array";
+import { randJobSkill, randJobTitle, randJobDescription } from "./job";
+import { pick, random, fill } from "../array";
+import generateEmployerProfile from "./employer";
+import generateEmployeeProfile from "./employee";
+
+const generateProfile = {
+  super: () => ({}),
+  employer: generateEmployerProfile,
+  employee: generateEmployeeProfile,
+};
 
 const fakeUser = ({
   name = faker.name.firstName(),
   email = faker.internet.email(name),
   role = "employee",
-  skills = fill(2 + random(6), generateRandomJobSkill).map((s) => ({
-    id: nanoid(),
-    text: s,
-  })),
   country = faker.address.country(),
+  profile = generateProfile[role](name),
   ...data
 } = {}) => ({
   id: nanoid(),
@@ -23,9 +24,8 @@ const fakeUser = ({
   email,
   role,
   token: nanoid(42),
-  verified: faker.datatype.boolean(),
-  skills,
   country,
+  profile,
   ...data,
 });
 
@@ -33,7 +33,7 @@ const anyUser = (users, role) => pick(users.filter((u) => u.role === role));
 
 const fakeJob = ({
   OwnerId = anyUser(users, "employer")?.id,
-  skills = fill(2 + random(4), generateRandomJobSkill).map((s) => ({
+  skills = fill(2 + random(4), randJobSkill).map((s) => ({
     id: nanoid(),
     text: s,
   })),
@@ -44,8 +44,8 @@ const fakeJob = ({
   OwnerId,
   modifyDate,
   expireDate,
-  title: generateRandomJobTitle(),
-  description: generateRandomJobDescription(),
+  title: randJobTitle(),
+  description: randJobDescription(),
   skills,
 });
 

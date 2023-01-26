@@ -3,7 +3,7 @@ import { Button, Stack, Container, Card, CardContent } from "@mui/material";
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
 import { delUser } from "../../features/users/action";
-import { Header } from "../../utils/Header";
+import { Header } from "../../utils/components/Header";
 import { onClick } from "../../utils/onClick";
 
 export default function Employees() {
@@ -34,7 +34,16 @@ export default function Employees() {
   );
 }
 
-function UserCard({ user: { id, email, verified }, remove, view, admin }) {
+function UserCard({
+  user: {
+    id,
+    email,
+    profile: { verified },
+  },
+  remove,
+  view,
+  admin,
+}) {
   return (
     <Card onClick={onClick(() => view(id))} style={{ cursor: "pointer" }}>
       <CardContent>

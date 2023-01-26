@@ -9,7 +9,7 @@ import { formatDistanceToNow } from "date-fns";
 
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import { Header } from "../../utils/Header";
+import { Header } from "../../utils/components/Header";
 
 export default function JobIndex() {
   const user = useSelector((state) => state.login.user);
@@ -84,7 +84,7 @@ function JobList({
 }
 
 const hasSkill = (user) => (skill) =>
-  user.skills.some((ss) => ss.text === skill.text);
+  user.profile.skills?.some?.((ss) => ss.text === skill.text);
 
 function JobCard({ job, user, offers, showMatchingSkills = true }) {
   const { title, expireDate } = job;

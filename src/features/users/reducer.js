@@ -8,7 +8,7 @@ export default function Reducer(state = initialState, action) {
       const item = action.payload;
       const exists = state.some((f) => f.id === item.id);
       return exists
-        ? state.map((f) => (f.id === item.id ? item : f))
+        ? state.map((f) => (f.id === item.id ? { ...f, ...item } : f))
         : [...state, item];
     }
     case DEL_USER: {
@@ -17,7 +17,9 @@ export default function Reducer(state = initialState, action) {
     }
     case VERIFY_USER: {
       const id = action.payload;
-      return state.map((f) => (f.id === id ? { ...f, verified: true } : f));
+      return state.map((f) =>
+        f.id === id ? { ...f, profile: { ...f.profile, verified: true } } : f
+      );
     }
     default:
       return state;

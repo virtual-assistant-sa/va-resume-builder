@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Stack, Paper, Typography } from "@mui/material";
 import { nanoid } from "nanoid";
 import { remove } from "../utils/array";
-import { useMultilineText } from "../utils/useText";
+import { useMultilineText } from "../utils/hooks/useText";
 
 export function Skills({ skills }) {
   return (

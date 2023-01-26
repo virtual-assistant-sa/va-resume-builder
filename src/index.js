@@ -6,7 +6,7 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import thunk from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
-import demo from "./demo";
+import demo from "./utils/fake";
 
 const store = configureStore({
   reducer: rootReducer,

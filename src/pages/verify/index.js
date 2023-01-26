@@ -9,7 +9,9 @@ export default function Employees() {
   const user = useSelector((state) => state.login.user);
   const admin = user?.role === "super";
 
-  const list = useSelector((state) => state.users).filter((e) => !e.verified);
+  const list = useSelector((state) => state.users).filter(
+    (e) => !e.profile.verified
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
