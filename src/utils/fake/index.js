@@ -47,6 +47,7 @@ const fakeJob = ({
   title: randJobTitle(),
   description: randJobDescription(),
   skills,
+  recommend: [],
 });
 
 const users = [

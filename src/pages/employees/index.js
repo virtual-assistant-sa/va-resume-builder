@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { delUser } from "../../features/users/action";
 import { Header } from "../../utils/components/Header";
 import { onClick } from "../../utils/onClick";
+import { hasSkill } from "../jobs/hasSkill";
 
 export default function Employees() {
   const user = useSelector((state) => state.login.user);
@@ -14,6 +15,7 @@ export default function Employees() {
   const list = useSelector((state) => state.users).filter(
     (u) => u.role === "employee"
   );
+
   const dispatch = useDispatch();
 
   const remove = (id) => {
