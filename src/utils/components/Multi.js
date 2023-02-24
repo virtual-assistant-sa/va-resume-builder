@@ -20,7 +20,7 @@ export default function Multi({ users = [], user: [user, setUser] }) {
           {users.map((u) => (
             <Tab
               key={u.email}
-              label={`${u.name} (${u.role})`}
+              label={`${u.firstName} (${u.role})`}
               value={u.email}
               onClick={() => setUser(u)}
             />

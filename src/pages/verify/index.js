@@ -1,23 +1,17 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Stack, Paper, Container } from "@mui/material";
+import { Stack, Paper, Container } from "@mui/material";
 import { nanoid } from "nanoid";
-import { useDispatch, useSelector } from "react-redux";
-import { delUser } from "../../features/users/action";
+import { useSelector } from "react-redux";
+import { selectActiveUser, selectAllUsers } from "../../features/users/select";
 
-export default function Employees() {
-  const user = useSelector((state) => state.login.user);
+export default function VerifyIndex() {
+  const user = useSelector(selectActiveUser);
   const admin = user?.role === "super";
 
-  const list = useSelector((state) => state.users).filter(
-    (e) => !e.profile.verified
-  );
+  const list = useSelector(selectAllUsers).filter((e) => !e.profile.verified);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
-  const remove = (id) => {
-    dispatch(delUser(id));
-  };
   const view = (id = nanoid()) => {
     navigate("./" + id + "/edit");
   };
@@ -30,16 +24,12 @@ export default function Employees() {
         {list.map(({ id, email }, i) => (
           <Paper key={id}>
             <Stack direction="row">
-              {admin ? <Button onClick={(e) => remove(id)}>X</Button> : null}
               <Container onClick={() => view(id)} style={{ cursor: "pointer" }}>
                 <pre>{email}</pre>
               </Container>
             </Stack>
           </Paper>
         ))}
-        <Button variant="contained" onClick={() => view()}>
-          +
-        </Button>
       </Stack>
     </Container>
   );

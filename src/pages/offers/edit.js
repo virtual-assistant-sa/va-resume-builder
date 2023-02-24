@@ -3,11 +3,12 @@ import { Button, Stack, Container } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getActions, getFilter } from "./filters";
+import { selectActiveUser, selectAllUsers } from "../../features/users/select";
 
 export default function Offer() {
   let { id } = useParams();
 
-  const user = useSelector((state) => state.login.user);
+  const user = useSelector(selectActiveUser);
   const canEdit = ["super", "employer"].includes(user?.role);
   const canView = canEdit || ["employee"].includes(user?.role);
 
@@ -24,7 +25,7 @@ export default function Offer() {
     dispatch(f(form, user));
   };
 
-  const users = useSelector((state) => state.users);
+  const users = useSelector(selectAllUsers);
   const getUserFromId = (id) => users.find((e) => e.id === id);
 
   if (canView)

@@ -8,11 +8,12 @@ import { setJob } from "../../features/jobs/action";
 import { useDate } from "../../utils/hooks/useDateTime";
 import { Skills, EditSkills } from "../Skills";
 import { useStateMemo } from "../../utils/hooks/useStateMemo";
+import { selectActiveUser } from "../../features/users/select";
 
 export default function Job() {
   let { id } = useParams();
 
-  const user = useSelector((state) => state.login.user) || { role: "anon" };
+  const user = useSelector(selectActiveUser);
   const canEdit = ["super", "employer"].includes(user?.role);
   const canView = canEdit || ["employee"].includes(user?.role);
 

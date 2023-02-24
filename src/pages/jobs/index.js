@@ -10,9 +10,10 @@ import { formatDistanceToNow } from "date-fns";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import { Header } from "../../utils/components/Header";
+import { selectActiveUser } from "../../features/users/select";
 
 export default function JobIndex() {
-  const user = useSelector((state) => state.login.user);
+  const user = useSelector(selectActiveUser);
   const owner = ["super", "employer"].includes(user?.role);
   const showMatchingSkills = ["employee"].includes(user?.role);
 

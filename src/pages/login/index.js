@@ -1,7 +1,8 @@
 import React from "react";
 import LoginForm from "../../utils/components/Login";
 import { useDispatch, useSelector } from "react-redux";
-import { switchUser } from "../../features/login/action";
+import { switchUser } from "../../features/users/action";
+import { selectActiveUser, selectAllUsers } from "../../features/users/select";
 
 const config = {
   loginUrl: "http://localhost:4002/api/login",
@@ -11,11 +12,11 @@ const config = {
 
 export default function Login() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.login).user;
-  const users = useSelector((state) => state.users);
+  const user = useSelector(selectActiveUser);
+  const users = useSelector(selectAllUsers);
 
-  const setUser = (v) => {
-    dispatch(switchUser(v));
+  const setUser = async (user) => {
+    dispatch(switchUser(user));
   };
 
   return (

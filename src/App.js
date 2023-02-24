@@ -17,6 +17,7 @@ import OfferEdit from "./pages/offers/edit";
 
 import Navbar from "./utils/components/Nav";
 import { AppBar, Stack } from "@mui/material";
+import { selectActiveUser } from "./features/users/select";
 
 const routes = {
   super: {
@@ -48,7 +49,7 @@ const routes = {
 };
 
 function App() {
-  const user = useSelector((state) => state.login.user);
+  const user = useSelector(selectActiveUser);
 
   return (
     <Theme theme={themes["GENERAL"]}>

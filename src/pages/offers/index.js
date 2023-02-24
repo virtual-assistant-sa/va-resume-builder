@@ -5,9 +5,10 @@ import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
 import { delOffer } from "../../features/offers/action";
 import { getFilter } from "./filters";
+import { selectActiveUser } from "../../features/users/select";
 
 export default function OfferIndex() {
-  const user = useSelector((state) => state.login.user);
+  const user = useSelector(selectActiveUser);
   const owner = ["super", "employee"].includes(user?.role);
 
   const filter = getFilter(user);

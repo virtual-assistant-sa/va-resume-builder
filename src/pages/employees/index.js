@@ -5,15 +5,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { delUser } from "../../features/users/action";
 import { Header } from "../../utils/components/Header";
 import { onClick } from "../../utils/onClick";
+import { selectActiveUser, selectAllUsers } from "../../features/users/select";
 
 export default function Employees() {
-  const user = useSelector((state) => state.login.user);
+  const user = useSelector(selectActiveUser);
   const viewable = ["super", "employer"].includes(user?.role);
   const admin = user?.role === "super";
 
-  const list = useSelector((state) => state.users).filter(
-    (u) => u.role === "employee"
-  );
+  const list = useSelector(selectAllUsers).filter((u) => u.role === "employee");
   const dispatch = useDispatch();
 
   const remove = (id) => {

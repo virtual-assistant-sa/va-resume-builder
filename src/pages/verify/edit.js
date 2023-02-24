@@ -3,29 +3,25 @@ import { Button, Stack, Container } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { verifyUser } from "../../features/users/action";
+import { selectUser } from "../../features/users/select";
 
 export default function EditVerify() {
   let { id } = useParams();
-  const form = useSelector(
-    (state) =>
-      state.users?.find?.((f) => f.id === id) ?? {
-        id,
-        email: "",
-      }
-  );
+  const form = useSelector(selectUser(id));
   const dispatch = useDispatch();
   const verify = () => {
-    dispatch(verifyUser({ id }));
+    dispatch(verifyUser(id));
   };
 
-  return (
-    <Container>
-      <Stack gap={2}>
-        <h1>Editor</h1>
-        <p>{form.email}</p>
-        <p>Verified: {form.verified ? "yes" : "no"}</p>
-        <Button onClick={verify}>Verify</Button>
-      </Stack>
-    </Container>
-  );
+  if (form)
+    return (
+      <Container>
+        <Stack gap={2}>
+          <h1>Editor</h1>
+          <p>{form.email}</p>
+          <p>Verified: {form.profile?.verified ? "yes" : "no"}</p>
+          <Button onClick={verify}>Verify</Button>
+        </Stack>
+      </Container>
+    );
 }

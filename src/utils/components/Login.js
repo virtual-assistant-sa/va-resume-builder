@@ -62,15 +62,9 @@ export default function LoginForm({
   config: { loginUrl, registerUrl },
 }) {
   const onComplete = (response) => {
-    const { success, message, accessToken, data } = response;
-    if (success && accessToken && data) {
-      setuser({
-        id: data.id,
-        email: data.email,
-        role: data.role,
-        token: accessToken,
-      });
-      console.log(message);
+    const { success, message, user } = response;
+    if (success && user) {
+      setuser(user);
       setopen(false);
     } else {
       console.error(response);
@@ -91,38 +85,24 @@ export default function LoginForm({
 
   const [open, setopen] = useState(false);
 
-  if (user)
-    return (
-      <Stack
-        direction="row"
-        gap={2}
-        sx={{ flexGrow: 1, alignItems: "center", justifyContent: "flex-end" }}
+  return (
+    <Stack
+      direction="row"
+      gap={2}
+      sx={{ flexGrow: 1, alignItems: "center", justifyContent: "flex-end" }}
+    >
+      <Button variant="contained" onClick={() => setopen(true)}>
+        {user.firstName}
+      </Button>
+      <Dialog
+        open={open}
+        onClose={() => setopen(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
-        {user.email} ({user.role})
-        <Button variant="contained" onClick={() => setuser()}>
-          Log out
-        </Button>
-      </Stack>
-    );
-  else
-    return (
-      <Stack
-        direction="row"
-        gap={2}
-        sx={{ flexGrow: 1, alignItems: "center", justifyContent: "flex-end" }}
-      >
-        <Button variant="contained" onClick={() => setopen(true)}>
-          Log in
-        </Button>
-        <Dialog
-          open={open}
-          onClose={() => setopen(false)}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Multi users={users} user={[user, setuser]} />
-          <LxLogin login={login} register={register} />
-        </Dialog>
-      </Stack>
-    );
+        <Multi users={users} user={[user, setuser]} />
+        <LxLogin login={login} register={register} />
+      </Dialog>
+    </Stack>
+  );
 }

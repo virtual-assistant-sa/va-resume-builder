@@ -3,14 +3,13 @@ import { Button, Stack, Paper, Container } from "@mui/material";
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
 import { delUser } from "../../features/users/action";
+import { selectActiveUser, selectAllUsers } from "../../features/users/select";
 
 export default function Employees() {
-  const user = useSelector((state) => state.login.user);
+  const user = useSelector(selectActiveUser);
   const admin = user?.role === "super";
 
-  const list = useSelector((state) => state.users).filter(
-    (u) => u.role === "employer"
-  );
+  const list = useSelector(selectAllUsers).filter((u) => u.role === "employer");
   const dispatch = useDispatch();
 
   const remove = (id) => {
