@@ -13,6 +13,8 @@ export default function ProfileEdit({ value, onChange }) {
           value: value.intro,
           onChange: (intro) => onChange({ ...value, intro }),
           placeholder: "Intro",
+          rows: 5,
+          multiline: true,
         }}
       />
       <ListField
@@ -24,13 +26,15 @@ export default function ProfileEdit({ value, onChange }) {
         }}
       >
         {({ onChange, value }) => (
-          <TextField
-            {...{
-              value: value.text,
-              onChange: (text) => onChange({ ...value, text }),
-              placeholder: "Skill",
-            }}
-          />
+          <Stack gap={1} p={1}>
+            <TextField
+              {...{
+                value: value.text,
+                onChange: (text) => onChange({ ...value, text }),
+                placeholder: "Skill",
+              }}
+            />
+          </Stack>
         )}
       </ListField>
       <ListField
@@ -42,7 +46,7 @@ export default function ProfileEdit({ value, onChange }) {
         }}
       >
         {({ onChange, value }) => (
-          <Stack gap={1}>
+          <Stack gap={1} p={1}>
             <DateField
               {...{
                 value: value.start,
@@ -88,7 +92,7 @@ export default function ProfileEdit({ value, onChange }) {
         }}
       >
         {({ onChange, value }) => (
-          <Stack gap={1}>
+          <Stack gap={1} p={1}>
             <DateField
               {...{
                 value: value.start,
@@ -113,13 +117,15 @@ export default function ProfileEdit({ value, onChange }) {
               }}
             >
               {({ onChange, value }) => (
-                <TextField
-                  {...{
-                    value: value.text,
-                    onChange: (text) => onChange({ ...value, text }),
-                    placeholder: "Responsibility",
-                  }}
-                />
+                <Stack gap={1} p={1}>
+                  <TextField
+                    {...{
+                      value: value.text,
+                      onChange: (text) => onChange({ ...value, text }),
+                      placeholder: "Responsibility",
+                    }}
+                  />
+                </Stack>
               )}
             </ListField>
             <TextField
@@ -156,13 +162,15 @@ export default function ProfileEdit({ value, onChange }) {
         }}
       >
         {({ onChange, value }) => (
-          <TextField
-            {...{
-              value: value.text,
-              onChange: (text) => onChange({ ...value, text }),
-              placeholder: "Hobby",
-            }}
-          />
+          <Stack gap={1} p={1}>
+            <TextField
+              {...{
+                value: value.text,
+                onChange: (text) => onChange({ ...value, text }),
+                placeholder: "Hobby",
+              }}
+            />
+          </Stack>
         )}
       </ListField>
     </Stack>
