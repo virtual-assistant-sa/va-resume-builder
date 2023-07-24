@@ -4,7 +4,7 @@
 
 import React from "react";
 import MuiTextField from "@mui/material/TextField";
-import { DebounceField } from "./DebounceField";
+import { DebounceComponent } from "./DebounceField";
 
 export const TextFieldB = ({ value, onChange, ...opts }) => {
   return (
@@ -16,12 +16,6 @@ export const TextFieldB = ({ value, onChange, ...opts }) => {
   );
 };
 
-export function TextField({ value, onChange, ...props }) {
-  return (
-    <DebounceField {...{ value, onChange }}>
-      {({ value, onChange }) => (
-        <TextFieldB {...{ value, onChange, ...props }} />
-      )}
-    </DebounceField>
-  );
+export function TextField(props) {
+  return <DebounceComponent {...props} Component={TextFieldB} />;
 }

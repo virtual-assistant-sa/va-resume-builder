@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from "react";
-import { Button, Stack, Box, Checkbox, FormControlLabel } from "@mui/material";
+import { Button, Stack, Box, Checkbox } from "@mui/material";
 import { useParams } from "react-router-dom";
 import useText, { useMultilineText } from "../../utils/hooks/useText";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,14 +8,13 @@ import { setJob } from "../../features/jobs/action";
 import { useDate } from "../../utils/hooks/useDateTime";
 import { Skills, EditSkills } from "../Skills";
 import { useStateMemo } from "../../utils/hooks/useStateMemo";
-import { matchingSkills } from "./hasSkill";
 
 export default function Job() {
   let { id } = useParams();
 
-  const selectLoggedInUser = (state) =>
-    state.login.user || { id: 0, name: "Anon", role: "anon" };
-  const user = useSelector(selectLoggedInUser);
+  const user = useSelector((state) => state.login.user) || { role: "anon" };
+  const canEdit = ["super", "employer"].includes(user?.role);
+  const canView = canEdit || ["employee"].includes(user?.role);
 
   const date7days = useMemo(() => Date.now() + 7 * 24 * 60 * 60 * 1000, []);
   const defaults = {
@@ -29,28 +28,13 @@ export default function Job() {
 
   const filter = getFilter(user);
 
-  const selectAllOffers = (state) => state.offers;
-  const selectJobById = (id) => (state) => state.jobs.find((f) => f.id === id);
-
-  const offers = useSelector(selectAllOffers);
-  const form = useSelector(selectJobById(id));
+  const list = useSelector((state) => state.jobs).filter(filter);
+  const offers = useSelector((state) => state.offers);
+  const form = list.find((f) => f.id === id);
 
   const hasOffer =
     form && offers.find((o) => o.UserId === user.id && o.JobId === form.id);
   const actions = getActions(user, hasOffer);
-
-  const isSuper = ["super"].includes(user?.role);
-  const isEmployer = ["employer"].includes(user?.role);
-  const isEmployee = ["employee"].includes(user?.role);
-  const isExisting = !!form;
-  const canRecommend = isSuper && isExisting;
-  const canEdit =
-    (isSuper && isExisting) ||
-    (isEmployer && (!isExisting || form.OwnerId === user?.id));
-  const canView =
-    canEdit ||
-    canRecommend ||
-    (isEmployee && isExisting && form.recommend.includes(user?.id));
 
   const dispatch = useDispatch();
   const doAction = (f) => {
@@ -66,11 +50,7 @@ export default function Job() {
         <Stack gap={2}>
           <h1>Job</h1>
           {canEdit ? (
-            <JobEdit
-              form={form ?? defaults}
-              onChange={onChange}
-              canRecommend={canRecommend}
-            />
+            <JobEdit form={form ?? defaults} onChange={onChange} />
           ) : (
             <JobView form={form ?? defaults} />
           )}
@@ -96,7 +76,7 @@ function JobView({ form: { title, expireDate, description, skills } }) {
   );
 }
 
-function JobEdit({ form, onChange, canRecommend }) {
+function JobEdit({ form, onChange }) {
   const [title, Title] = useText(form.title, { placeholder: "Title" });
   const [expireDate, ExpireDate] = useDate(form.expireDate, {
     label: "Expire Date",
@@ -105,7 +85,7 @@ function JobEdit({ form, onChange, canRecommend }) {
     placeholder: "Description",
   });
   const [skills, setSkills] = useStateMemo(form.skills);
-  const [recommend, setRecommend] = useStateMemo(form.recommend || []);
+  const [recommend, setRecommend] = useState(form.recommend || []);
   const modified = {
     ...form,
     title,
@@ -120,17 +100,13 @@ function JobEdit({ form, onChange, canRecommend }) {
     .filter((u) => u.profile?.verified)
     .map((u) => ({
       ...u,
-      matchingSkills: matchingSkills(u.profile.skills, job.skills),
+      matchingSkills: matchingSkills(u.profile.skills, job),
     }))
     .sort((a, b) => a.matchingSkills.length - b.matchingSkills.length);
 
   useEffect(() => {
-    console.log("onChange", description, modified);
     if (onChange) onChange(modified);
   }, [title, expireDate, description, skills, recommend]);
-
-  const users = useSelector((state) => state.users);
-  const getNameOfUserId = (id) => users.find((u) => u.id === id)?.name;
 
   return (
     <>
@@ -139,31 +115,19 @@ function JobEdit({ form, onChange, canRecommend }) {
       {onChange ? Description : <p>{description}</p>}
       <EditSkills skills={[skills, setSkills]} />
 
-      <h3>Recommended</h3>
-      {canRecommend ? (
-        employees.map((employee, i) => (
-          <>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  label={employee.name}
-                  checked={recommend.includes(employee.id)}
-                  onChange={(e) => {
-                    console.log(e.target.checked);
-                    setRecommend((r) => {
-                      const rr = r.filter((e) => e !== employee.id);
-                      return !e.target.checked ? rr : [...rr, employee.id];
-                    });
-                  }}
-                />
-              }
-              label={employee.name}
-            />
-          </>
-        ))
-      ) : (
-        <>{recommend.map((id) => id + getNameOfUserId(id).name)}</>
-      )}
+      {employees.map((employee, i) => (
+        <Checkbox
+          label={employee.name}
+          selected={recommend.includes(employee.id)}
+          onChange={(e) =>
+            setRecommend((r) =>
+              [...r, employee.id].filter((e) =>
+                e.target.value ? true : e !== employee.id
+              )
+            )
+          }
+        />
+      ))}
     </>
   );
 }

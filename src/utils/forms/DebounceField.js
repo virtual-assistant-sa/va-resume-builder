@@ -2,7 +2,8 @@
 // Distributed under the Boost Software License, Version 1.0.
 // https://www.boost.org/LICENSE_1_0.txt
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { debounce } from "throttle-debounce";
 
 export const DebounceField = ({
   value,
@@ -11,17 +12,24 @@ export const DebounceField = ({
   children,
 }) => {
   const [v, setv] = useState(value);
-  const timer = useRef(null);
-
+  const onChangeD = useMemo(() => debounce(timeout, onChange), [timeout]);
   useEffect(() => {
-    setv(value);
-  }, [value]);
-  return children({
-    value: v,
-    onChange: (v) => {
-      setv(v);
-      if (timer.current) clearTimeout(timer.current);
-      timer.current = setTimeout(() => onChange(v), timeout);
-    },
-  });
+    onChangeD(v);
+  }, [v]);
+  return children({ value: v, onChange: (v) => setv(v) });
+};
+
+export const DebounceComponent = ({
+  value,
+  onChange,
+  timeout = 1000,
+  Component,
+  ...opts
+}) => {
+  const [v, setv] = useState(value);
+  const onChangeD = useMemo(() => debounce(timeout, onChange), [timeout]);
+  useEffect(() => {
+    onChangeD(v);
+  }, [v]);
+  return <Component {...{ value: v, onChange: (v) => setv(v), ...opts }} />;
 };

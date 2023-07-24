@@ -4,7 +4,6 @@ import { randJobSkill, randJobTitle, randJobDescription } from "./job";
 import { pick, random, fill } from "../array";
 import generateEmployerProfile from "./employer";
 import generateEmployeeProfile from "./employee";
-import { roleIdByName } from "../../features/users/constants";
 
 const generateProfile = {
   super: () => ({}),
@@ -13,17 +12,17 @@ const generateProfile = {
 };
 
 const fakeUser = ({
-  firstName = faker.name.firstName(),
-  email = faker.internet.email(firstName),
+  name = faker.name.firstName(),
+  email = faker.internet.email(name),
   role = "employee",
   country = faker.address.country(),
-  profile = generateProfile[role](firstName),
+  profile = generateProfile[role](name),
   ...data
 } = {}) => ({
   id: nanoid(),
-  firstName,
+  name,
   email,
-  roleId: roleIdByName[role],
+  role,
   token: nanoid(42),
   country,
   profile,
@@ -48,20 +47,16 @@ const fakeJob = ({
   title: randJobTitle(),
   description: randJobDescription(),
   skills,
+  recommend: [],
 });
 
 const users = [
-  ...fill(1, () => fakeUser({ roleId: 3, verified: true })),
-  ...fill(2, () => fakeUser({ roleId: 2, verified: true })),
-  ...fill(3, () => fakeUser({ roleId: 1 })),
+  ...fill(1, () => fakeUser({ role: "super", verified: true })),
+  ...fill(2, () => fakeUser({ role: "employer", verified: true })),
+  ...fill(3, () => fakeUser({ role: "employee" })),
 ];
 
 const jobs = fill(50, () => fakeJob({}));
 
-const state = {
-  users: {
-    recent: users,
-  },
-  jobs,
-};
+const state = { users, jobs };
 export default state;

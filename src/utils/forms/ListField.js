@@ -4,27 +4,25 @@
 
 import React from "react";
 import { Button, Stack, Paper, Box } from "@mui/material";
-import { prependItem, removeItem, upsertItem } from "../array";
+import { nanoid } from "nanoid";
+import { remove } from "../array";
 
 export function ListField({
   label,
   value,
   defaultValue,
   onChange,
-  onClick = null,
+  onClick,
   children,
 }) {
-  const update = (item) => {
-    onChange(upsertItem(value)(item));
-  };
   const add = () => {
-    const newValue =
-      typeof defaultValue === "function" ? defaultValue() : defaultValue;
-    onChange(prependItem(value)(newValue));
+    onChange([{ ...defaultValue, id: nanoid() }, ...value]);
   };
-  const del = (item) => {
-    onChange(removeItem(value)(item));
+  const del = (i) => {
+    onChange(remove(value, i));
   };
+  if (!value.every((v) => v.id))
+    throw new Error("Invalid id" + JSON.stringify(value));
 
   return (
     <Stack gap={2}>
@@ -47,7 +45,8 @@ export function ListField({
             >
               {children({
                 value: item,
-                onChange: update,
+                onChange: (item) =>
+                  onChange(value.map((l) => (l.id === item.id ? item : l))),
               })}
             </Box>
           </Stack>

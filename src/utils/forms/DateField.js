@@ -7,7 +7,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { TextField } from "@mui/material";
-import { DebounceField } from "./DebounceField";
+import { DebounceComponent } from "./DebounceField";
 
 export function DateFieldB({ value = "", onChange, ...opts }) {
   return (
@@ -24,12 +24,6 @@ export function DateFieldB({ value = "", onChange, ...opts }) {
   );
 }
 
-export function DateField({ value, onChange, ...props }) {
-  return (
-    <DebounceField {...{ value, onChange }}>
-      {({ value, onChange }) => (
-        <DateFieldB {...{ value, onChange, ...props }} />
-      )}
-    </DebounceField>
-  );
+export function DateField(props) {
+  return <DebounceComponent {...props} Component={DateFieldB} />;
 }

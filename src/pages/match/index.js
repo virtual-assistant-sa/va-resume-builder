@@ -84,14 +84,8 @@ function JobList({
   );
 }
 
-function JobCard({
-  job,
-  user,
-  offers,
-  showMatchingSkills = true,
-  showRecommend = true,
-}) {
-  const { title, expireDate, recommend } = job;
+function JobCard({ job, user, offers, showMatchingSkills = true }) {
+  const { title, expireDate } = job;
   const matching = job.skills.filter(hasSkill(user));
 
   const hasOffer = offers.find(
@@ -99,9 +93,6 @@ function JobCard({
   );
   const isExpired = job.expireDate < Date.now();
   const expireDistance = formatDistanceToNow(expireDate);
-
-  const users = useSelector((state) => state.users);
-  const getNameOfUserId = (id) => users.find((u) => u.id === id)?.name;
 
   return (
     <Card>
@@ -128,16 +119,6 @@ function JobCard({
               {matching.map((s) => (
                 <Typography key={s.id} color="primary">
                   {s.text}
-                </Typography>
-              ))}
-            </Grid>
-          ) : null}
-          {showRecommend && recommend.length ? (
-            <Grid item xs={6}>
-              <h5>Recommended Employees</h5>
-              {recommend.map((s) => (
-                <Typography key={s} color="primary">
-                  {getNameOfUserId(s)}
                 </Typography>
               ))}
             </Grid>

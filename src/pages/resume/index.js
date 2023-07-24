@@ -5,7 +5,6 @@ import { Box, Fab } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../features/users/action";
 import { DebounceField } from "../../utils/forms/DebounceField";
-import { selectActiveUser, selectAllUsers } from "../../features/users/select";
 
 const style = {
   bottom: "auto",
@@ -17,10 +16,10 @@ const style = {
 
 export default function Switcher() {
   const [preview, setPreview] = useState(false);
-  const user = useSelector(selectActiveUser);
+  const user = useSelector((state) => state.login.user);
   const id = user?.id;
 
-  const employee = useSelector(selectAllUsers).find((u) => u.id === id);
+  const employee = useSelector((state) => state.users).find((u) => u.id === id);
 
   const dispatch = useDispatch();
   const set = (profile) => dispatch(setUser({ id: employee.id, profile }));
