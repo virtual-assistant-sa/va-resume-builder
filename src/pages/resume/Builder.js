@@ -4,7 +4,7 @@ import { TextField } from "../../utils/forms/TextField";
 import { DateField } from "../../utils/forms/DateField";
 import { ListField } from "../../utils/forms/ListField";
 
-export default function ProfileEdit({ value, onChange }) {
+export default function ProfileEdit({ value = {}, onChange }) {
   return (
     <Stack gap={2}>
       <h1>Profile</h1>
@@ -20,7 +20,7 @@ export default function ProfileEdit({ value, onChange }) {
       <ListField
         {...{
           label: "Skills",
-          value: value.skills,
+          value: value.skills ?? [],
           onChange: (skills) => onChange({ ...value, skills }),
           defaultValue: { text: "" },
         }}
@@ -40,7 +40,7 @@ export default function ProfileEdit({ value, onChange }) {
       <ListField
         {...{
           label: "Education",
-          value: value.educations,
+          value: value.educations ?? [],
           onChange: (educations) => onChange({ ...value, educations }),
           defaultValue: { start: 0, end: 0, what: "", where: "" },
         }}
@@ -81,7 +81,7 @@ export default function ProfileEdit({ value, onChange }) {
       <ListField
         {...{
           label: "Experience",
-          value: value.experiences,
+          value: value.experiences ?? [],
           onChange: (experiences) => onChange({ ...value, experiences }),
           defaultValue: {
             start: 0,
@@ -110,7 +110,7 @@ export default function ProfileEdit({ value, onChange }) {
             <ListField
               {...{
                 label: "Responsibilities",
-                value: value.responsibilities,
+                value: value.responsibilities ?? [],
                 onChange: (responsibilities) =>
                   onChange({ ...value, responsibilities }),
                 defaultValue: { text: "" },
@@ -156,7 +156,7 @@ export default function ProfileEdit({ value, onChange }) {
       <ListField
         {...{
           label: "Hobbies",
-          value: value.hobbies,
+          value: value.hobbies ?? [],
           onChange: (hobbies) => onChange({ ...value, hobbies }),
           defaultValue: { text: "" },
         }}

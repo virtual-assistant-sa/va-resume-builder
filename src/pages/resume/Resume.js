@@ -46,20 +46,18 @@ const Resume = ({
     return (
       <>
         <H2 light>{headline}</H2>
-        {data
-          ? data.map((item, i) => {
-              return (
-                <div key={i}>
-                  <Text light>
-                    {getYear(item.start)} - {getYear(item.end)}
-                  </Text>
-                  <Text light>{item.where}</Text>
-                  <Text light>{item.what}</Text>
-                  {i === data.length - 1 ? null : <Spacer />}
-                </div>
-              );
-            })
-          : null}
+        {data?.map((item, i) => {
+          return (
+            <div key={i}>
+              <Text light>
+                {getYear(item.start)} - {getYear(item.end)}
+              </Text>
+              <Text light>{item.where}</Text>
+              <Text light>{item.what}</Text>
+              {i === data.length - 1 ? null : <Spacer />}
+            </div>
+          );
+        })}
       </>
     );
   };
@@ -67,15 +65,13 @@ const Resume = ({
     return (
       <>
         <H2 light>{headline}</H2>
-        {list
-          ? list.map(({ id, text }, i) => {
-              return (
-                <Text key={id} light>
-                  {text}
-                </Text>
-              );
-            })
-          : null}
+        {list?.map(({ id, text }, i) => {
+          return (
+            <Text key={id} light>
+              {text}
+            </Text>
+          );
+        })}
       </>
     );
   };
@@ -91,11 +87,9 @@ const Resume = ({
               {data.where.business} | {data.where.country}
             </Text>
             <ul>
-              {data.responsibilities
-                ? data.responsibilities.map(({ id, text }, i) => {
-                    return <li key={id}>{text}</li>;
-                  })
-                : null}
+              {data.responsibilities?.map(({ id, text }, i) => {
+                return <li key={id}>{text}</li>;
+              })}
             </ul>
           </>
         ) : null}
@@ -126,16 +120,14 @@ const Resume = ({
           <H2>Virtual Assistant</H2>
           <Spacer />
           <H3>Work Experience</H3>
-          {experiences.map((data, i) => {
+          {experiences?.map((data, i) => {
             return <WorkExperienceBlock key={i} data={data} />;
           })}
           <Spacer />
           <H3>Skills</H3>
-          {skills
-            ? skills.map(({ id, text }, i) => {
-                return <div key={i}>{text}</div>;
-              })
-            : null}
+          {skills?.map(({ id, text }, i) => {
+            return <div key={i}>{text}</div>;
+          })}
         </ContentContainer>
       </Container>
     </Paper>
