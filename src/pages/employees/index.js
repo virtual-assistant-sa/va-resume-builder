@@ -1,11 +1,10 @@
 import React from "react";
-import { Button, Stack, Container, Card, CardContent } from "@mui/material";
+import { Stack, Container } from "@mui/material";
 import { nanoid } from "nanoid";
 import { useDispatch, useSelector } from "react-redux";
 import { delUser } from "../../features/users/action";
-import { Header } from "../../utils/components/Header";
-import { onClick } from "../../utils/onClick";
 import { hasSkill } from "../jobs/hasSkill";
+import { UserCard } from "./UserCard";
 
 export default function Employees() {
   const user = useSelector((state) => state.login.user);
@@ -33,31 +32,5 @@ export default function Employees() {
         ))}
       </Stack>
     </Container>
-  );
-}
-
-function UserCard({
-  user: {
-    id,
-    email,
-    profile: { verified },
-  },
-  remove,
-  view,
-  admin,
-}) {
-  return (
-    <Card onClick={onClick(() => view(id))} style={{ cursor: "pointer" }}>
-      <CardContent>
-        <Stack direction="row">
-          {admin ? (
-            <Button onClick={onClick(() => remove(id))}>X</Button>
-          ) : null}
-          <Container>
-            <Header title={email} chips={[verified && "VERIFIED"]} />
-          </Container>
-        </Stack>
-      </CardContent>
-    </Card>
   );
 }

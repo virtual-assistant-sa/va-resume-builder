@@ -23,7 +23,7 @@ export default function EditVerify() {
       <Stack gap={2}>
         <h1>Editor</h1>
         <p>{form.email}</p>
-        <p>Verified: {form.verified ? "yes" : "no"}</p>
+        <p>Verified: {form.profile.verified ? "yes" : "no"}</p>
         <Button onClick={verify}>Verify</Button>
       </Stack>
     </Container>
