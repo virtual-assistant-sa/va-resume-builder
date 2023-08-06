@@ -6,6 +6,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@faker-js/faker": "^7.6.0",
+    "@mui/icons-material": "^5.14.1",
     "@mui/material": "^5.11.1",
     "@mui/x-date-pickers": "^5.0.15",
     "@reduxjs/toolkit": "^1.9.1",

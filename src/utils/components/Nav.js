@@ -4,20 +4,35 @@
 
 import * as React from "react";
 
-import { Link } from "react-router-dom";
-import { Tab, Tabs } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { ResponsiveAppBar } from "./ResponsiveAppBar";
+import { useNavigate } from "react-router-dom";
 
-export default function Nav({ routes }) {
-  const location = useLocation();
-  const routeEntries = Object.entries(routes);
-  const route = "/" + location.pathname.split("/")?.[1];
-  const exists = routeEntries.some(([, val]) => val === route);
+export default function Nav({ pages, extras }) {
+  const navigate = useNavigate();
+  const setLink = (link) => {
+    navigate(link);
+  };
+  const setKey = (key) => {
+    setLink(getLink(key));
+  };
+
+  const all = { ...pages, ...extras };
+
+  const getKey = (link) => Object.entries(all).find((v) => link === v[1])?.[0];
+  const getLink = (key) => all[key];
+
+  const link = "/" + useLocation().pathname.split("/")?.[1];
+  const key = getKey(link);
+
   return (
-    <Tabs value={exists && route} variant="scrollable">
-      {routeEntries.map(([key, val]) => (
-        <Tab key={key} label={key} value={val} component={Link} to={val} />
-      ))}
-    </Tabs>
+    <ResponsiveAppBar
+      {...{
+        page: [key, setKey],
+        extra: [key, setKey],
+        pages: Object.keys(pages),
+        extras: Object.keys(extras),
+      }}
+    />
   );
 }

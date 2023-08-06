@@ -53,6 +53,7 @@ function App() {
   return (
     <Theme theme={themes["GENERAL"]}>
       <AppBar position="static">
+        <Navbar pages={routes[user?.role ?? "anon"] ?? {}} extras={[]} />
         <Stack
           direction="row"
           gap={2}
@@ -62,7 +63,6 @@ function App() {
             justifyContent: "flex-end",
           }}
         >
-          <Navbar routes={routes[user?.role ?? "anon"] ?? {}} />
           <Login />
         </Stack>
       </AppBar>
