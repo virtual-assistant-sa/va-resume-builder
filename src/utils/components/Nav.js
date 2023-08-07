@@ -7,9 +7,12 @@ import * as React from "react";
 import { useLocation } from "react-router-dom";
 import { ResponsiveAppBar } from "./ResponsiveAppBar";
 import { useNavigate } from "react-router-dom";
+import { Stack } from "@mui/material";
 
 export default function Nav({ pages, extras }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const setLink = (link) => {
     navigate(link);
   };
@@ -22,17 +25,19 @@ export default function Nav({ pages, extras }) {
   const getKey = (link) => Object.entries(all).find((v) => link === v[1])?.[0];
   const getLink = (key) => all[key];
 
-  const link = "/" + useLocation().pathname.split("/")?.[1];
+  const link = location.pathname;
   const key = getKey(link);
 
   return (
-    <ResponsiveAppBar
-      {...{
-        page: [key, setKey],
-        extra: [key, setKey],
-        pages: Object.keys(pages),
-        extras: Object.keys(extras),
-      }}
-    />
+    <Stack>
+      <ResponsiveAppBar
+        {...{
+          page: [key, setKey],
+          extra: [key, setKey],
+          pages: Object.keys(pages),
+          extras: Object.keys(extras),
+        }}
+      />
+    </Stack>
   );
 }

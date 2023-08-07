@@ -2,7 +2,7 @@
   "name": "va-resume-builder",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "va-resume-builder",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
