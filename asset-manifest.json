@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "./static/js/main.669b146c.js",
-    "index.html": "./index.html",
-    "main.669b146c.js.map": "./static/js/main.669b146c.js.map"
+    "main.js": "/va-resume-builder/static/js/main.e2205672.js",
+    "index.html": "/va-resume-builder/index.html",
+    "main.e2205672.js.map": "/va-resume-builder/static/js/main.e2205672.js.map"
   },
   "entrypoints": [
-    "static/js/main.669b146c.js"
+    "static/js/main.e2205672.js"
   ]
 }
